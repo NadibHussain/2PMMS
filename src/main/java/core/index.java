@@ -4,6 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;  // Import the IOException class to handle errors
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -45,7 +46,7 @@ public class index {
         }
     }
 
-    static String sorter(String data){
+    static int[] sorter(String data){
         String[] str_data = data.split("\\s+");
         StringBuilder str_out = new StringBuilder();
         int[] int_data = new int[str_data.length];
@@ -59,19 +60,17 @@ public class index {
         System.out.print(str_out);
         System.out.println();
         System.out.println("---------------");
-        return str_out.toString();
+        return int_data;
     }
 
     static void sorted_dataset_creator(int memory_size){
         try {
             String input_pathname = "dataset.txt";
-            String output_pathname = "sorted_dataset.txt";
             File inputfile = new File(input_pathname);
-            File outputfile = new File(output_pathname);
-            outputfile.createNewFile();
-            PrintWriter output_writer = new PrintWriter(output_pathname, "UTF-8");
             Scanner input_reader = new Scanner(inputfile);
             String data_line = "";
+            ArrayList<int[]> input_matrix = new ArrayList<>();
+            ArrayList<int[]> output_matrix = new ArrayList<>();
 
             System.out.println("Phase 1 Start");
             while (input_reader.hasNextLine()){
@@ -86,15 +85,31 @@ public class index {
                 }
 //                TimeUnit.SECONDS.sleep(1);
                 System.out.println(data_line);
-                data_line=sorter(data_line);
-                output_writer.println(data_line);
+                input_matrix.add(sorter(data_line));
                 data_line="";
             }
 
             input_reader.close();
-            output_writer.close();
             System.out.println("Phase 1 end");
+            int pass_counter = 1;
+            boolean first_time = true;
+            while (output_matrix.size()!=1){
 
+                while (!input_matrix.isEmpty()){
+
+                    ArrayList<int[]> merge_list = new ArrayList<>();
+                    for (int i = 0; i < memory_size; i++) {
+                        if (!input_matrix.isEmpty()){
+                            merge_list.add(input_matrix.remove(0));
+                        }
+                        else {
+                            break;
+                        }
+                    }
+//                merge sort here and save it into output matrix
+                }
+
+            }
 
 
         } catch (IOException e) {
