@@ -62,6 +62,33 @@ public class index {
         System.out.println("---------------");
         return int_data;
     }
+    static int[] sort_chunk(ArrayList<int[]>chunk){
+        int[][] chunk_array = new int[chunk.size()][chunk.size()];
+        chunk_array = chunk.toArray(chunk_array);
+
+        ArrayList<Integer> arrayList = new ArrayList<>();
+
+        for(int i=0; i< chunk_array.length; i++){
+            for(int val: chunk_array[i]){
+                arrayList.add(val);
+            }
+        }
+
+        int array[] = new int[arrayList.size()];
+        int c=0;
+        for(int el: arrayList){
+            array[c]=el;
+            c++;
+        }
+        int sorted[] = mergeSort(array, 0, array.length-1);
+
+        for(int val: sorted){
+            System.out.print(val+" ");
+        }
+        System.out.println();
+        return sorted;
+    }
+
 
     static void sorted_dataset_creator(int memory_size){
         try {
@@ -94,7 +121,15 @@ public class index {
             int pass_counter = 1;
             boolean first_time = true;
             while (output_matrix.size()!=1){
-
+                System.out.println("-----------------");
+                System.out.println("Pass number "+ pass_counter);
+                System.out.println("-----------------");
+                pass_counter++;
+                if (!first_time){
+                    input_matrix= (ArrayList<int[]>) output_matrix.clone();
+                    output_matrix.clear();
+                }
+                first_time = false;
                 while (!input_matrix.isEmpty()){
 
                     ArrayList<int[]> merge_list = new ArrayList<>();
@@ -106,9 +141,11 @@ public class index {
                             break;
                         }
                     }
-//                merge sort here and save it into output matrix
+                    int[] sorted_chunk = sort_chunk(merge_list);
+                    System.out.println(".......................");
+                    output_matrix.add(sorted_chunk);
+                    System.out.println(".......................");
                 }
-
             }
 
 
@@ -118,32 +155,7 @@ public class index {
         }
     }
 
-    int[] sort_chunk(int [][]chunk){
-
-        ArrayList<Integer> arrayList = new ArrayList<>();
-
-        for(int i=0; i< chunk.length; i++){
-            for(int val: chunk[i]){
-                arrayList.add(val);
-            }
-        }
-
-        int array[] = new int[arrayList.size()];
-        int c=0;
-        for(int el: arrayList){
-            array[c]=el;
-            c++;
-        }
-        int sorted[] = mergeSort(array, 0, array.length-1);
-
-        System.out.println("Printing sorted[] from sort_chunk method: ");
-        for(int val: sorted){
-            System.out.print(val+" ");
-        }
-
-        return sorted;
-    }
-    void merge(int arr[], int p, int q, int r) {
+    static void merge(int arr[], int p, int q, int r) {
 
         int n1 = q - p + 1;
         int n2 = r - q;
@@ -184,7 +196,7 @@ public class index {
         }
     }
 
-    int [] mergeSort(int arr[], int l, int r) {
+    static int [] mergeSort(int arr[], int l, int r) {
         if (l < r) {
             int m = (l + r) / 2;
             mergeSort(arr, l, m);
@@ -223,6 +235,7 @@ public class index {
                     System.out.println("Memory Size:");
                     n = sc.nextInt();
                     sorted_dataset_creator(n);
+                    System.out.println("ended");
                     break;
                 default:
                     exit = true;
